@@ -12,6 +12,7 @@ import OptionPage from "../screens/OptionPage";
 import InvestmentPage from "../screens/InvestmentPage";
 import ExpensesInsert from "../screens/ExpensesInsert";
 import IncomesInsert from "../screens/IncomesInsert";
+import ExpensesDetailsPage from "../screens/ExpensesDetailsPage.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const NavigationScreen = () => {
               
                 <Stack.Screen name="GoalManagement" component={GoalManagement}/>
                 <Stack.Screen name="InvestmentPage" component={InvestmentPage}/>
+                <Stack.Screen name="ExpensesDetailsPage" component={ExpensesDetailsPage}/>
                 <Stack.Screen name="LoanDetails" component={LoanDetails}/>
                 <Stack.Screen name="Links" component={Links}/>
                 <Stack.Screen name="IncomesInsert" component={IncomesInsert}/>

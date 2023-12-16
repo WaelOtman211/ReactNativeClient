@@ -6,7 +6,7 @@ import FooterList from "../components/footer/FooterList";
 import axios from 'axios';
 import { HOST } from '../network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import auth from '../context/auth';
+
 
 
 const ExpensesInsert = ({ navigation }) => {
@@ -19,6 +19,8 @@ const ExpensesInsert = ({ navigation }) => {
 
   const handleViewExpenses = async () => {
     const resp = await axios.get(`${HOST}/api/getExpenses`)
+    console.log(resp.data)
+    navigation.navigate("ExpensesDetailsPage");
   };
 
 
@@ -31,11 +33,11 @@ const ExpensesInsert = ({ navigation }) => {
 
     console.log("submitInsert")
      
-    // if (name === '' || tracked === '' || budget === '') {
-    //     alert("All fields are required");
-    //     return;
-    // }
-    console.log("auth=" + auth.state.user)
+    if (name === '' || tracked === '' || budget === '') {
+        alert("All fields are required");
+        return;
+    }
+    
     user_id=0
     try {
       const resp = await axios.post(`${HOST}/api/insertExpenses`, { user_id ,name, tracked, budget });
