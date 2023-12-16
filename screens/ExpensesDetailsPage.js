@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, SafeAreaView, FlatList,ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import ExpensesInsert from './ExpensesInsert';
 
@@ -31,37 +31,40 @@ const ExpensesDetails = ({ route, navigation }) => {
                     <Text style={styles.headerCell}>Tracked</Text>
                     <Text style={styles.headerCell}>Expenses</Text>
                 </View>
-                <ScrollView>
-                    <FlatList
-                        data={expensesData.expenses}
-                        keyExtractor={(item) => item._id}
-                        renderItem={renderItem}
-                        ListFooterComponent={() => (
-                            <>
-                                <View style={styles.line} />
-                                <View style={styles.totalRow}>
-                                    <Text style={[styles.cell, styles.totalCell]}>
-                                        {totalBudget.toFixed(2)}
-                                    </Text>
-                                    <Text style={[styles.cell, styles.totalCell]}>
-                                        {totalTracked.toFixed(2)}
-                                    </Text>
-                                    <Text style={[styles.cell, styles.totalCell]}>Total</Text>
-                                </View>
-                            </>
-                        )}
-                        style={{ height: 5 * 80 }} // Set height based on the number of items you want to display without scrolling
-                    />
-                </ScrollView>
-                <TouchableOpacity
-                    style={styles.buttonContainer}
-                    onPress={() => {
-                        // Add navigation logic to navigate to the Expenses Report screen
-                        // Example: navigation.navigate('ExpensesReport');
-                    }}
-                >
-                    <Text style={styles.buttonText}>View Expenses Report</Text>
-                </TouchableOpacity>
+                <FlatList
+                    data={expensesData.expenses}
+                    keyExtractor={(item) => item._id}
+                    renderItem={renderItem}
+                  
+                />
+                <View>
+                
+                        <>
+                            <View style={styles.line} />
+                            <View style={styles.totalRow}>
+                                <Text style={[styles.cell, styles.totalCell]}>
+                                    {totalBudget.toFixed(2)}
+                                </Text>
+                                <Text style={[styles.cell, styles.totalCell]}>
+                                    {totalTracked.toFixed(2)}
+                                </Text>
+                                <Text style={[styles.cell, styles.totalCell]}>Total</Text>
+                            </View>
+                        </>
+                    
+                </View>
+                <View style={{ marginBottom: 20 }}></View>
+                 <TouchableOpacity
+                 
+                                style={styles.buttonContainer}
+                                onPress={() => {
+                                    // Add navigation logic to navigate to the Expenses Report screen
+                                    // Example: navigation.navigate('ExpensesReport');
+                                }}
+                            >
+                                <Text style={styles.buttonText}>View Expenses Report</Text>
+                            </TouchableOpacity>
+                         
             </View>
         </SafeAreaView>
     );
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     buttonContainer: {
-        marginBottom: 60,
+        marginBottom: 180,
     backgroundColor: "#E4F2F0",
     height: 50,
     width: '60%', // Adjust the width as needed
