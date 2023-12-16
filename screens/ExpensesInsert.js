@@ -19,15 +19,14 @@ const ExpensesInsert = ({ navigation }) => {
 
   const handleViewExpenses = async () => {
     const resp = await axios.get(`${HOST}/api/getExpenses`)
-    console.log(resp.data)
-    navigation.navigate("ExpensesDetailsPage");
+   
+    navigation.navigate("ExpensesDetailsPage",{
+      expensesData:resp.data
+    });
   };
 
 
-  const handleGoals = async () => {
-    navigation.navigate("GoalManagement");
-  };
-
+ 
 
   const handleSubmit = async () => {
 
