@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput ,SafeAreaView} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import FooterList from "../components/footer/FooterList";
+import axios from 'axios';
+import { HOST } from '../network';
+
 const GoalManagementPage = () => {
-  const [goals, setGoals] = useState([
-    { id: '1', title: 'Buy a Car', amount: 5000, collectedAmount: 2000, startDate: '2023-01-01', endDate: '2023-12-31' },
-    { id: '2', title: 'Travel the World', amount: 10000, collectedAmount: 5000, startDate: '2023-01-01', endDate: '2024-12-31' },
-    { id: '3', title: 'Save for Retirement', amount: 20000, collectedAmount: 10000, startDate: '2023-01-01', endDate: '2030-12-31' },
-  ]);
+  const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [transferAmount, setTransferAmount] = useState('');
+
+  useEffect(() => {
+    getGoals();
+  }, []);
+
+  const getGoals = async () => {
+    try {
+      const resp = await axios.get(`${HOST}/api/getGoals`);
+      const dbGoals = resp.data.goals;
+
+      const convertedGoals = dbGoals.map((dbGoal, index) => {
+        return {
+          id: (index + 1).toString(),
+          title: dbGoal.name, // Assuming 'name' field from the database is equivalent to 'title'
+          amount: parseInt(dbGoal.amount),
+          collectedAmount: parseInt(dbGoal.collected),
+          startDate: new Date(dbGoal.startDate).toISOString().split("T")[0],
+          endDate: new Date(dbGoal.endDate).toISOString().split("T")[0],
+        };
+      });
+
+      setGoals(convertedGoals);
+    } catch (error) {
+      console.error("Error fetching goals data:", error);
+      throw error;
+    }
+  };
 
   const transferFunds = (fromGoalId, toGoalId) => {
     // Validate transfer amount
@@ -81,32 +107,29 @@ const GoalManagementPage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-            
-    <View style={styles.containerr}>
-      <LinearGradient
-        colors={['#C9F0DB', '#A0E6C3']}
-        style={styles.background}
-        start={[0, 0]}
-        end={[1, 1]}
-      />
+      <View style={styles.containerr}>
+        <LinearGradient
+          colors={['#C9F0DB', '#A0E6C3']}
+          style={styles.background}
+          start={[0, 0]}
+          end={[1, 1]}
+        />
 
-      <Text style={styles.header}>Goal Management</Text>
+        <Text style={styles.header}>Goal Management</Text>
 
-      <FlatList
-        data={goals}
-        renderItem={renderGoalItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.goalList}
-      />
+        <FlatList
+          data={goals}
+          renderItem={renderGoalItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.goalList}
+        />
 
-      {renderGoalDetails()}
-    </View>
-     
-            <FooterList/>
-        </SafeAreaView>
+        {renderGoalDetails()}
+      </View>
+      <FooterList />
+    </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
     container:{flex: 1, justifyContent: "space-between"},
     mainText:{fontSize:30 , textAlign:"center"},

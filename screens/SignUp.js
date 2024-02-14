@@ -48,8 +48,8 @@ const SignUp = ({ navigation }) => {
             <View style={styles.circle1} />
             <View style={styles.rectangle2} />
 
-            <Text style={{ position: 'absolute', fontWeight: 'bold', fontSize: 40, color: 'black', top: 98, right: 12, }}>Spend </Text>
-            <Text style={{ position: 'absolute', fontWeight: 'bold', fontSize: 64, color: 'black', top: 78, right: 185, }}>Smart</Text>
+            <Text style={{ position: 'absolute', fontWeight: 'bold', fontSize: 40, color: 'black', top: 98, right: "7%", }}>Spend </Text>
+            <Text style={{ position: 'absolute', fontWeight: 'bold', fontSize: 64, color: 'black', top: 78, right: '52%', }}>Smart</Text>
             <View style={{ marginVertical: 100 }}>
 
                 <View style={styles.imageContainer}>

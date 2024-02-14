@@ -53,8 +53,8 @@ const SignIn = ({ navigation }) => {
   <View style={styles.circle2} />
   <View style={styles.circle1} />
   <View style={styles.rectangle2} />
-    <Text style={{position: 'absolute',fontWeight: 'bold',fontSize: 40,color: 'black', top:128, right: 12,}}>Spend </Text>
-    <Text style={ {position: 'absolute',fontWeight: 'bold',fontSize: 64,color: 'black', top:108,right: 185,}}>Smart</Text>
+    <Text style={{position: 'absolute',fontWeight: 'bold',fontSize: 40,color: 'black', top:128, right: "7%",}}>Spend </Text>
+    <Text style={ {position: 'absolute',fontWeight: 'bold',fontSize: 64,color: 'black', top:108,right: "52%",}}>Smart</Text>
       <View style={{ marginVertical: 100 }}>
       <View style={styles.imageContainer}></View>
         <View style={styles.imageContainer}>

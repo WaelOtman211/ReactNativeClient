@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView,SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons'; // Import Feather icons from react-native-vector-icons
-
+import FooterList from '../components/footer/FooterList';
 const InvestmentPage = () => {
   const [income, setIncome] = useState('');
   const [investmentPercentage, setInvestmentPercentage] = useState('');
@@ -87,7 +87,8 @@ const InvestmentPage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.containerr}>
       <LinearGradient
         colors={['#C9F0DB', '#A0E6C3']}
         style={styles.background}
@@ -141,6 +142,7 @@ const InvestmentPage = () => {
             ))}
           </ScrollView>
         </View>
+        
       )}
 
       {stockDetails && (
@@ -154,19 +156,23 @@ const InvestmentPage = () => {
           {/* You can display more details about the stock here */}
         </View>
       )}
+     
     </View>
+    <FooterList />
+   </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
+  container:{flex: 1, justifyContent: "space-between"},
     stockIcon: {
         position: 'absolute',
-        left: 10,
-        alignSelf: 'center',      },
-    container: {
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingTop: 40,
-    },
+        right: 10,
+              },
+        containerr: {
+          flex: 1,
+          paddingHorizontal: 20,
+          
+        },
     background: {
       position: 'absolute',
       top: 0,

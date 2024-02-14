@@ -28,7 +28,7 @@ const FooterList = () => {
             <TouchableOpacity onPress={signOut}>
                     <FontAwesome5 name="bell" size={35} />
                 </TouchableOpacity>
-            <FooterItem text="LoanDetails" name="plus-square" screenName="LoanDetails" handlePress={() => navigation.navigate("LoanDetails")} routeName={route.name} />
+            <FooterItem text="Calendar" name="calendar" screenName="CalendarPage" handlePress={() => navigation.navigate("CalendarPage")} routeName={route.name} />
             <FooterItem text="Account" name="user" screenName="Account" handlePress={() => navigation.navigate("Account")} routeName={route.name} />
             <FooterItem text="Home" name="home" screenName="Home" handlePress={() => navigation.navigate("OptionPage")} routeName={route.name} />
 

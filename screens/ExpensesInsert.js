@@ -1,57 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome
 import FooterList from "../components/footer/FooterList";
+import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
-import { HOST } from '../network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import { HOST } from '../network';
 
 const ExpensesInsert = ({ navigation }) => {
- 
-
   const [name, setName] = useState("");
   const [tracked, setTracked] = useState("");
   const [budget, setBudget] = useState("");
+  const [yearNumber, setYearNumber] = useState("");
+  const [monthNumber, setMonthNumber] = useState("");
 
+  useEffect(() => {
+    const currentDate = new Date();
+    const pastMonthDate = new Date(currentDate);
+    pastMonthDate.setMonth(currentDate.getMonth() );
 
-  const handleViewExpenses = async () => {
-    const resp = await axios.get(`${HOST}/api/getExpenses`)
-   
-    navigation.navigate("ExpensesDetailsPage",{
-      expensesData:resp.data
-    });
-  };
+    setYearNumber(pastMonthDate.getFullYear().toString());
+    setMonthNumber((pastMonthDate.getMonth() + 1).toString()); // Months are 0-based
+  }, []); // Empty dependency array to ensure it runs only once on component mount
+  const user_id = '64d373c5bf764a582023e5f7';
 
+  const handleViewExpenses = async () => { 
+    try {
+        const resp = await axios.post(`${HOST}/api/getExpenses`, { user_id, yearNumber, monthNumber });
+        
+        // Instead of navigating with parameters, set the expenses data in the state
+        navigation.navigate("ExpensesDetailsPage",{
+          expensesData: resp.data.expenses,
+        });
+    } catch (error) {
+        console.error("Error fetching expenses data:", error);
+    }
+};
 
- 
 
   const handleSubmit = async () => {
-
-    console.log("submitInsert")
-     
     if (name === '' || tracked === '' || budget === '') {
-        alert("All fields are required");
-        return;
+      alert("All fields are required");
+      return;
     }
-    
-    user_id=0
+
     try {
-      const resp = await axios.post(`${HOST}/api/insertExpenses`, { user_id ,name, tracked, budget });
-      console.log(resp.data);
+      const resp = await axios.post(`${HOST}/api/insertExpenses`, {
+        user_id,
+        name,
+        tracked,
+        budget,
+        yearNumber,
+        monthNumber,
+      });
 
       await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
-      alert("insert Successfully");
-      //         navigation.navigate("OptionPage");
+      alert("Insert Successfully");
     } catch (error) {
-      console.error(error);
+      console.error("Error inserting expenses:", error);
       alert("An error occurred. Please try again later.");
     }
-    // };
-    //   const handelSavings = async () => {
-    //     navigation.navigate("Links");
   };
 
   return (
@@ -96,25 +104,18 @@ const ExpensesInsert = ({ navigation }) => {
             <Text style={styles.buttonText}>View Expenses</Text>
           </TouchableOpacity>
         </View>
-
-        {/* "+" icon with circle background */}
-        <TouchableOpacity style={styles.addButton}>
-          <FontAwesome name="plus" style={styles.addIcon} />
-        </TouchableOpacity>
       </View>
       <FooterList />
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   background: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    
     paddingTop: 40,
   },
   gradientBackground: {
@@ -125,8 +126,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   headerContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
+    
+    
     marginBottom: 30,
   },
   header: {
@@ -182,10 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
   },
-  addIcon: {
-    color: 'white',
-    fontSize: 20,
-  },
+ 
 });
 
 export default ExpensesInsert;

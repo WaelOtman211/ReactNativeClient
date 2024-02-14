@@ -1,22 +1,74 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, SafeAreaView } from 'react-native'
-import React, { useState, useContext } from 'react'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, SafeAreaView, FlatList } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
 import FooterList from "../components/footer/FooterList";
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import { HOST } from '../network';
+
 
 const OptionPage = ({ navigation }) => {
+  const user_id = '64d373c5bf764a582023e5f7';
+  const MinuteProcess=5;
+  const HourProcess=18;
+  const DayProcess=10
+
+  //Previuos Month
+  const [yearNumber, setPrevYear] = useState("");
+  const [monthNumber, setPrevMonth] = useState("");
+
+  const [dayCurrent, setDayCurrent] = useState("");
+  const [hourCurrent, setHourCurrent] = useState("");
+  const [minuteCurrent, setMinuteCurrent] = useState("");
 
   const handleGoals = async () => {
     navigation.navigate("GoalManagement");
   };
   const handelSavings = async () => {
-    navigation.navigate("Links");
+    navigation.navigate("SavingsPage");
   };
   const handleInvestment = async () => {
     navigation.navigate("InvestmentPage");
   };
+  state = {
+    textInputs: [],
+  };
+
+  const LastMonthProcess =async () => {
+    if (dayCurrent == 6 && minuteCurrent == 22 && hourCurrent==18) {
+      try {
+        const resp = await axios.post(`${HOST}/api/getExpenses`, { user_id, yearNumber, monthNumber });
+        
+        // Instead of navigating with parameters, set the expenses data in the state
+        navigation.navigate("ExpensesDetailsPage",{
+          expensesData: resp.data.expenses,
+        });
+    } catch (error) {
+        console.error("Error fetching expenses data:", error);
+    }
+    }
+};
+
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const pastMonthDate = new Date(currentDate);
+
+    pastMonthDate.setMonth(currentDate.getMonth() );
+
+    setPrevYear(pastMonthDate.getFullYear().toString());
+    setPrevMonth((pastMonthDate.getMonth()).toString()); 
+
+    setDayCurrent((currentDate.getDay()))
+    setHourCurrent((currentDate.getHours()))
+    setMinuteCurrent((currentDate.getMinutes()))
+    LastMonthProcess();
+    console.log("hi     "+pastMonthDate.getFullYear()+"     "+yearNumber+"   "+ monthNumber)
+  }, []); 
+
   return (
 
     <SafeAreaView style={styles.container}>
+
       <View style={styles.containerr}>
         <LinearGradient
           colors={['#C9F0DB', '#A0E6C3']}
@@ -24,6 +76,7 @@ const OptionPage = ({ navigation }) => {
           start={[0, 0]}
           end={[1, 1]}
         />
+
         <View style={styles.container}>
           <View style={styles.content}>
             <View style={styles.circle2} />
@@ -51,6 +104,7 @@ const OptionPage = ({ navigation }) => {
         </View>
 
       </View>
+
       <FooterList />
     </SafeAreaView>
   );
@@ -84,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'black',
     top: 98,
-    right: 12,
+    right: '10%',
   },
   subtitle: {
     position: 'absolute',
@@ -92,12 +146,12 @@ const styles = StyleSheet.create({
     fontSize: 64,
     color: 'black',
     top: 78,
-    right: 185,
+    left: '-2%',
   },
   selectOptionText: {
     fontSize: 24,
     fontWeight: 'bold',
-   
+
     color: 'black',
     marginBottom: 40,
   },
